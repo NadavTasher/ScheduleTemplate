@@ -12,9 +12,12 @@
     border-color: transparent;
     flex-direction: row;
     justify-content: space-around;
-    width: 60vw;
     height: 6vh;
     margin: 0.5vh;
+}
+
+#schedule > div > * {
+    width: 100%;
 }
 
 #schedule > div > p {
@@ -33,4 +36,12 @@
 
 #title {
     font-size: 250%;
+}
+
+#error {
+    color: red;
+}
+
+#app {
+    width: 60vw;
 }

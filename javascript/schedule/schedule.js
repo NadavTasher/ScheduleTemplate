@@ -1,4 +1,5 @@
 function schedule() {
+    view("home");
     read(displaySchedule);
 }
 
@@ -54,6 +55,14 @@ function bubble(slotArray) {
     return slotArray;
 }
 
+function fill(time) {
+    hide("error");
+    view("fill");
+    get("finish").onclick = () => {
+        write(get("name").value, time);
+    };
+}
+
 function read(callback) {
     let form = new FormData();
     form.append("action", "read");
@@ -91,8 +100,13 @@ function write(name, time) {
             let json = JSON.parse(result);
             if (json.hasOwnProperty("write")) {
                 if (json.write.hasOwnProperty("success")) {
-                    if (json.write.success)
+                    if (json.write.success) {
+                        hide("error");
                         window.location.reload(true);
+                    } else {
+                        show("error");
+                        get("name").value = "";
+                    }
                 }
             }
         });
