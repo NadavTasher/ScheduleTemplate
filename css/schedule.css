@@ -1,3 +1,36 @@
 #schedule {
-    overflow-y: scroll;
+    justify-content: stretch;
+    overflow-y: -moz-scrollbars-none;
+    overflow-y: auto;
+    min-height: 60vh;
+    height: 60vh;
+}
+
+#schedule > div {
+    background-color: #ddddee;
+    border-radius: 1vh;
+    border-color: transparent;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 60vw;
+    height: 6vh;
+    margin: 0.5vh;
+}
+
+#schedule > div > p {
+    font-size: 150%;
+    line-height: 5vh;
+    height: 5vh;
+}
+
+#schedule::-webkit-scrollbar {
+    width: 0 !important
+}
+
+#description, #custom > p {
+    font-size: 150%;
+}
+
+#title {
+    font-size: 250%;
 }
