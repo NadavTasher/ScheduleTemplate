@@ -1,9 +1,27 @@
 function schedule() {
     view("home");
-    read(displaySchedule);
+    read(display);
 }
 
-function displaySchedule(schedule) {
+function bubble(slotArray) {
+    let changes = 0;
+    for (let i = 0; i < slotArray.length; i++) {
+        if (i < slotArray.length - 1) {
+            if (slotArray[i].hasOwnProperty("scheduleIndex") && slotArray[i + 1].hasOwnProperty("scheduleIndex")) {
+                if (slotArray[i].scheduleIndex > slotArray[i + 1].scheduleIndex) {
+                    let temporary = slotArray[i];
+                    slotArray[i] = slotArray[i + 1];
+                    slotArray[i + 1] = temporary;
+                    changes++;
+                }
+            }
+        }
+    }
+    if (changes > 0) slotArray = bubble(slotArray);
+    return slotArray;
+}
+
+function display(schedule) {
     let slotArray = [];
     for (let key in schedule) {
         if (schedule.hasOwnProperty(key)) {
@@ -35,24 +53,6 @@ function displaySchedule(schedule) {
     for (let s = 0; s < slotArray.length; s++) {
         get("schedule").appendChild(slotArray[s]);
     }
-}
-
-function bubble(slotArray) {
-    let changes = 0;
-    for (let i = 0; i < slotArray.length; i++) {
-        if (i < slotArray.length - 1) {
-            if (slotArray[i].hasOwnProperty("scheduleIndex") && slotArray[i + 1].hasOwnProperty("scheduleIndex")) {
-                if (slotArray[i].scheduleIndex > slotArray[i + 1].scheduleIndex) {
-                    let temporary = slotArray[i];
-                    slotArray[i] = slotArray[i + 1];
-                    slotArray[i + 1] = temporary;
-                    changes++;
-                }
-            }
-        }
-    }
-    if (changes > 0) slotArray = bubble(slotArray);
-    return slotArray;
 }
 
 function fill(time) {

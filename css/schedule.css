@@ -1,3 +1,19 @@
+#app {
+    width: 60vw;
+}
+
+#title {
+    font-size: 250%;
+}
+
+#description, #custom > p {
+    font-size: 150%;
+}
+
+#error {
+    color: red;
+}
+
 #schedule {
     justify-content: stretch;
     overflow-y: -moz-scrollbars-none;
@@ -28,20 +44,4 @@
 
 #schedule::-webkit-scrollbar {
     width: 0 !important
-}
-
-#description, #custom > p {
-    font-size: 150%;
-}
-
-#title {
-    font-size: 250%;
-}
-
-#error {
-    color: red;
-}
-
-#app {
-    width: 60vw;
 }
