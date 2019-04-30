@@ -1,5 +1,6 @@
 #app {
-    width: 60vw;
+    width: 340px;
+    /*align-items: stretch;*/
 }
 
 #title {
@@ -28,7 +29,7 @@
     border-color: transparent;
     flex-direction: row;
     justify-content: space-around;
-    height: 6vh;
+    height: 9vh;
     margin: 0.5vh;
 }
 
@@ -38,8 +39,8 @@
 
 #schedule > div > p {
     font-size: 150%;
-    line-height: 5vh;
-    height: 5vh;
+    line-height: 7vh;
+    height: 7vh;
 }
 
 #schedule::-webkit-scrollbar {
