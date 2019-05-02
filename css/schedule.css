@@ -1,4 +1,4 @@
-#app {
+body > div {
     width: 340px;
     /*align-items: stretch;*/
 }
