@@ -66,7 +66,7 @@ function fill(time) {
 function read(callback) {
     let form = new FormData();
     form.append("action", "read");
-    fetch("php/schedule/schedule.php", {
+    fetch("scripts/backend/schedule/schedule.php", {
         method: "post",
         body: form
     }).then(response => {
@@ -92,7 +92,7 @@ function write(name, time) {
         name: name,
         time: time
     }));
-    fetch("php/schedule/schedule.php", {
+    fetch("scripts/backend/schedule/schedule.php", {
         method: "post",
         body: form
     }).then(response => {

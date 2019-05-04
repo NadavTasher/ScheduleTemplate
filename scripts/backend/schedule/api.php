@@ -1,8 +1,10 @@
 <?php
-const DATABASE = __DIR__ . "/../../files/schedule/database.json";
-const INITIAL_TIME = 420;
-const TERMINAL_TIME = 720;
-const SLOT_TIME = 5;
+const DATABASE = __DIR__ . "/../../../files/schedule/database.json";
+const INITIAL_TIME = -1;
+const TERMINAL_TIME = -2;
+const SLOT_TIME = -3;
+const INITIAL_MINUTE = ((INITIAL_TIME - INITIAL_TIME % 100) / 100) * 60 + (INITIAL_TIME % 100);
+const TERMINAL_MINUTE = ((TERMINAL_TIME - TERMINAL_TIME % 100) / 100) * 60 + (TERMINAL_TIME % 100);
 const DUPLICATES = false;
 
 $database = json_decode(file_get_contents(DATABASE));
@@ -48,7 +50,7 @@ function read()
 {
     global $database;
     $schedule = new stdClass();
-    for ($time = INITIAL_TIME; $time < TERMINAL_TIME; $time += SLOT_TIME) {
+    for ($time = INITIAL_MINUTE; $time < TERMINAL_MINUTE; $time += SLOT_TIME) {
         if (isset($database->$time)) {
             $schedule->$time = $database->$time;
         } else {
@@ -62,7 +64,7 @@ function write($name, $time)
 {
     global $database;
     if (is_string($name) && strlen($name) > 0) {
-        if (is_numeric($time) && $time >= INITIAL_TIME && $time <= TERMINAL_TIME && !isset($database->$time)) {
+        if (is_numeric($time) && $time >= INITIAL_MINUTE && $time <= TERMINAL_MINUTE && !isset($database->$time)) {
             if (DUPLICATES) {
                 $database->$time = $name;
                 return true;
