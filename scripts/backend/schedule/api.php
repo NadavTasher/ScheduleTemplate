@@ -1,5 +1,5 @@
 <?php
-const DATABASE = __DIR__ . "/../../../files/schedule/database.json";
+const DATABASE = __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "files" . DIRECTORY_SEPARATOR . "schedule" . DIRECTORY_SEPARATOR . "database.json";
 const INITIAL_TIME = -1;
 const TERMINAL_TIME = -2;
 const SLOT_TIME = -3;
@@ -12,22 +12,21 @@ $result = new stdClass();
 
 function schedule()
 {
-    if (isset($_POST["action"])) {
-        $action = $_POST["action"];
-        $parameters = null;
-        if (isset($_POST[$action]))
-            $parameters = json_decode(filter($_POST[$action]));
-        if ($action === "read") {
-            result("read", "success", true);
-            result("read", "list", read());
-        } else if ($action === "write") {
-            result("write", "success", false);
-            if ($parameters !== null && isset($parameters->name) && isset($parameters->time))
-                result("write", "success", write($parameters->name, $parameters->time));
-
+    if (isset($_POST["schedule"])) {
+        $information = json_decode(filter($_POST["schedule"]));
+        if (isset($information->action) && isset($information->parameters)) {
+            $action = $information->action;
+            $parameters = $information->parameters;
+            if ($action === "read") {
+                result("read", "success", true);
+                result("read", "list", read());
+            } else if ($action === "write") {
+                result("write", "success", false);
+                if ($parameters !== null && isset($parameters->name) && isset($parameters->time))
+                    result("write", "success", write($parameters->name, $parameters->time));
+            }
+            save();
         }
-        save();
-
     }
 }
 

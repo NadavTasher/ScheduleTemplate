@@ -65,7 +65,10 @@ function fill(time) {
 
 function read(callback) {
     let form = new FormData();
-    form.append("action", "read");
+    form.append("schedule", JSON.stringify({
+        action: "read",
+        parameters: {}
+    }));
     fetch("scripts/backend/schedule/schedule.php", {
         method: "post",
         body: form
@@ -87,10 +90,12 @@ function read(callback) {
 
 function write(name, time) {
     let form = new FormData();
-    form.append("action", "write");
-    form.append("write", JSON.stringify({
-        name: name,
-        time: time
+    form.append("schedule", JSON.stringify({
+        action: "write",
+        parameters: {
+            name: name,
+            time: time
+        }
     }));
     fetch("scripts/backend/schedule/schedule.php", {
         method: "post",
