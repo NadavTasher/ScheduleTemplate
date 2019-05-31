@@ -1,14 +1,22 @@
 <?php
-const DATABASE = __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "files" . DIRECTORY_SEPARATOR . "schedule" . DIRECTORY_SEPARATOR . "database.json";
-const INITIAL_TIME = -1;
-const TERMINAL_TIME = -2;
-const SLOT_TIME = -3;
-const INITIAL_MINUTE = ((INITIAL_TIME - INITIAL_TIME % 100) / 100) * 60 + (INITIAL_TIME % 100);
-const TERMINAL_MINUTE = ((TERMINAL_TIME - TERMINAL_TIME % 100) / 100) * 60 + (TERMINAL_TIME % 100);
-const DUPLICATES = false;
 
-$database = json_decode(file_get_contents(DATABASE));
-$result = new stdClass();
+include __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "base" . DIRECTORY_SEPARATOR . "api.php";
+
+const SCHEDULE_API = "schedule";
+
+const SCHEDULE_DATABASE = __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "files" . DIRECTORY_SEPARATOR . "schedule" . DIRECTORY_SEPARATOR . "database.json";
+
+const SCHEDULE_INITIAL_TIME = -1;
+const SCHEDULE_TERMINAL_TIME = -2;
+
+const SCHEDULE_SLOT_LENGTH = -3;
+
+const SCHEDULE_INITIAL_MINUTE = ((SCHEDULE_INITIAL_TIME - SCHEDULE_INITIAL_TIME % 100) / 100) * 60 + (SCHEDULE_INITIAL_TIME % 100);
+const SCHEDULE_TERMINAL_MINUTE = ((SCHEDULE_TERMINAL_TIME - SCHEDULE_TERMINAL_TIME % 100) / 100) * 60 + (SCHEDULE_TERMINAL_TIME % 100);
+
+const SCHEDULE_ALLOW_DUPLICATES = false;
+
+$schedule_database = json_decode(file_get_contents(SCHEDULE_DATABASE));
 
 function schedule()
 {
@@ -17,41 +25,26 @@ function schedule()
         if (isset($information->action) && isset($information->parameters)) {
             $action = $information->action;
             $parameters = $information->parameters;
+            result(SCHEDULE_API, $action, "success", false);
             if ($action === "read") {
-                result("read", "success", true);
-                result("read", "list", read());
+                result(SCHEDULE_API, "read", "success", true);
+                result(SCHEDULE_API, "read", "list", schedule_read());
             } else if ($action === "write") {
-                result("write", "success", false);
                 if ($parameters !== null && isset($parameters->name) && isset($parameters->time))
-                    result("write", "success", write($parameters->name, $parameters->time));
+                    result(SCHEDULE_API, "write", "success", schedule_write($parameters->name, $parameters->time));
             }
-            save();
+            schedule_save();
         }
     }
 }
 
-function filter($source)
+function schedule_read()
 {
-    // Filter inputs from XSS and other attacks
-    $source = str_replace("<", "", $source);
-    $source = str_replace(">", "", $source);
-    return $source;
-}
-
-function result($type, $key, $value)
-{
-    global $result;
-    if (!isset($result->$type)) $result->$type = new stdClass();
-    $result->$type->$key = $value;
-}
-
-function read()
-{
-    global $database;
+    global $schedule_database;
     $schedule = new stdClass();
-    for ($time = INITIAL_MINUTE; $time < TERMINAL_MINUTE; $time += SLOT_TIME) {
-        if (isset($database->$time)) {
-            $schedule->$time = $database->$time;
+    for ($time = SCHEDULE_INITIAL_MINUTE; $time < SCHEDULE_TERMINAL_MINUTE; $time += SCHEDULE_SLOT_LENGTH) {
+        if (isset($schedule_database->$time)) {
+            $schedule->$time = $schedule_database->$time;
         } else {
             $schedule->$time = null;
         }
@@ -59,19 +52,19 @@ function read()
     return $schedule;
 }
 
-function write($name, $time)
+function schedule_write($name, $time)
 {
-    global $database;
+    global $schedule_database;
     if (is_string($name) && strlen($name) > 0) {
-        if (is_numeric($time) && $time >= INITIAL_MINUTE && $time <= TERMINAL_MINUTE && !isset($database->$time)) {
-            if (DUPLICATES) {
-                $database->$time = $name;
+        if (is_numeric($time) && $time >= SCHEDULE_INITIAL_MINUTE && $time <= SCHEDULE_TERMINAL_MINUTE && !isset($schedule_database->$time)) {
+            if (SCHEDULE_ALLOW_DUPLICATES) {
+                $schedule_database->$time = $name;
                 return true;
             } else {
-                foreach ($database as $current) {
+                foreach ($schedule_database as $current) {
                     if ($current === $name) return false;
                 }
-                $database->$time = $name;
+                $schedule_database->$time = $name;
                 return true;
             }
         }
@@ -79,8 +72,8 @@ function write($name, $time)
     return false;
 }
 
-function save()
+function schedule_save()
 {
-    global $database;
-    file_put_contents(DATABASE, json_encode($database));
+    global $schedule_database;
+    file_put_contents(SCHEDULE_DATABASE, json_encode($schedule_database));
 }
