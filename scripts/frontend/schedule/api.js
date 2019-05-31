@@ -48,7 +48,6 @@ function display(schedule) {
         }
     }
     slotArray = bubble(slotArray);
-    console.log(slotArray);
     clear("schedule");
     for (let s = 0; s < slotArray.length; s++) {
         get("schedule").appendChild(slotArray[s]);
