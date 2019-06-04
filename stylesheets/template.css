@@ -1,5 +1,5 @@
 body > div {
-    width: 340px;
+    max-width: 460px;
 }
 
 #title {
