@@ -91,7 +91,7 @@
       ]
     },
     {
-      "name": "style",
+      "name": "stylesheet",
       "description": "App Style",
       "pattern": ".+",
       "needle": "/* Your App Style */",
