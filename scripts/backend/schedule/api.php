@@ -20,8 +20,8 @@ $schedule_database = json_decode(file_get_contents(SCHEDULE_DATABASE));
 
 function schedule()
 {
-    if (isset($_POST["schedule"])) {
-        $information = json_decode(filter($_POST["schedule"]));
+    if (isset($_POST[SCHEDULE_API])) {
+        $information = json_decode(filter($_POST[SCHEDULE_API]));
         if (isset($information->action) && isset($information->parameters)) {
             $action = $information->action;
             $parameters = $information->parameters;
