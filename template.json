@@ -96,7 +96,8 @@
       "pattern": ".+",
       "needle": "/* App Style */",
       "haystacks": [
-        "stylesheets/app.css"
+        "stylesheets/app.css",
+        "resources/offline.html"
       ]
     }
   ]
