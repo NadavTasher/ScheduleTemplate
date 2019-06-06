@@ -135,7 +135,7 @@ function worker(w = "worker.js") {
     }
 }
 
-function html() {
+function html(callback = undefined) {
     fetch("layouts/template.html", {
         method: "get"
     }).then(response => {
@@ -145,6 +145,7 @@ function html() {
             }).then(response => {
                 response.text().then((app) => {
                     document.body.children[0].innerHTML = template.replace("<!--App Body-->", app);
+                    if (callback !== undefined) callback();
                 });
             });
         });
