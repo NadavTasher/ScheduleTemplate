@@ -1,3 +1,6 @@
+const SCHEDULE_API = "schedule";
+const SCHEDULE_ENDPOINT = document.getElementsByName("endpoint")[0].getAttribute("content");
+
 function schedule() {
     view("home");
     read(display);
@@ -63,60 +66,23 @@ function fill(time) {
 }
 
 function read(callback) {
-    let form = new FormData();
-    form.append("schedule", JSON.stringify({
-        action: "read",
-        parameters: {}
-    }));
-    fetch(document.getElementsByName("endpoint")[0].getAttribute("content"), {
-        method: "post",
-        body: form
-    }).then(response => {
-        response.text().then((result) => {
-            let json = JSON.parse(result);
-            if (json.hasOwnProperty("schedule")) {
-                if (json.schedule.hasOwnProperty("read")) {
-                    if (json.schedule.read.hasOwnProperty("success")) {
-                        if (json.schedule.read.success) {
-                            if (json.schedule.read.hasOwnProperty("list")) {
-                                callback(json.schedule.read.list);
-                            }
-                        }
-                    }
-                }
-            }
-        });
+    api(SCHEDULE_ENDPOINT, SCHEDULE_API, "read", {}, (success, result, error) => {
+        if (success) callback(result);
     });
 }
 
 function write(name, time) {
-    let form = new FormData();
-    form.append("schedule", JSON.stringify({
-        action: "write",
-        parameters: {
-            name: name,
-            time: time
+    api(SCHEDULE_ENDPOINT, SCHEDULE_API, "write", {
+        name: name,
+        time: time
+    }, (success, result, error) => {
+        if (success) {
+            hide("error");
+            window.location.reload(true);
+        } else {
+            show("error");
+            get("error").innerText = error;
+            get("name").value = "";
         }
-    }));
-    fetch(document.getElementsByName("endpoint")[0].getAttribute("content"), {
-        method: "post",
-        body: form
-    }).then(response => {
-        response.text().then((result) => {
-            let json = JSON.parse(result);
-            if (json.hasOwnProperty("schedule")) {
-                if (json.schedule.hasOwnProperty("write")) {
-                    if (json.schedule.write.hasOwnProperty("success")) {
-                        if (json.schedule.write.success) {
-                            hide("error");
-                            window.location.reload(true);
-                        } else {
-                            show("error");
-                            get("name").value = "";
-                        }
-                    }
-                }
-            }
-        });
     });
 }
