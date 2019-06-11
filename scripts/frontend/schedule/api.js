@@ -1,3 +1,8 @@
+/*
+Created By NadavTasher
+https://github.com/NadavTasher/WebAppBase/
+*/
+
 const SCHEDULE_API = "schedule";
 const SCHEDULE_ENDPOINT = document.getElementsByName("endpoint")[0].getAttribute("content");
 
