@@ -1,7 +1,7 @@
-/*
-Created By NadavTasher
-https://github.com/NadavTasher/WebAppBase/
-*/
+/**
+ * Copyright (c) 2019 Nadav Tasher
+ * https://github.com/NadavTasher/ScheduleTemplate/
+ **/
 
 const SCHEDULE_API = "schedule";
 const SCHEDULE_ENDPOINT = document.getElementsByName("endpoint")[0].getAttribute("content");
