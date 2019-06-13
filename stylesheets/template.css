@@ -28,11 +28,13 @@ body > div {
 }
 
 #schedule > div {
+    flex-direction: row;
     background-color: #ddddee;
     border-radius: 1vh;
     border-color: transparent;
-    flex-direction: row;
     justify-content: space-around;
+    min-height: 9vh;
+    max-height: 9vh;
     height: 9vh;
     margin: 0.5vh;
 }
