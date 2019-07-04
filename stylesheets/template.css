@@ -3,10 +3,6 @@
  * https://github.com/NadavTasher/ScheduleTemplate/
  **/
 
-body > div {
-    max-width: 460px;
-}
-
 #title {
     font-size: 250%;
 }
@@ -33,9 +29,9 @@ body > div {
     border-radius: 1vh;
     border-color: transparent;
     justify-content: space-around;
-    min-height: 9vh;
-    max-height: 9vh;
-    height: 9vh;
+    min-height: min-content;
+    max-height: min-content;
+    height: min-content;
     margin: 0.5vh;
 }
 
