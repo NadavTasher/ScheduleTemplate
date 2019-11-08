@@ -71,8 +71,9 @@ function fill(time) {
 }
 
 function read(callback) {
-    api(SCHEDULE_ENDPOINT, SCHEDULE_API, "read", {}, (success, result, error) => {
-        if (success) callback(result);
+    api(SCHEDULE_ENDPOINT, SCHEDULE_API, "read", {}, (success, result) => {
+        if (success)
+            callback(result);
     });
 }
 
@@ -80,13 +81,11 @@ function write(name, time) {
     api(SCHEDULE_ENDPOINT, SCHEDULE_API, "write", {
         name: name,
         time: time
-    }, (success, result, error) => {
+    }, (success, result) => {
         if (success) {
-            hide("error");
             window.location.reload(true);
         } else {
-            show("error");
-            get("error").innerText = error;
+            popup(result, 3, "#AA0000AA", () => window.location.reload(true));
             get("name").value = "";
         }
     });

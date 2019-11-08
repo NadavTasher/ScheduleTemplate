@@ -11,10 +11,6 @@
     font-size: 150%;
 }
 
-#error {
-    color: red;
-}
-
 #schedule {
     justify-content: stretch;
     overflow-y: -moz-scrollbars-none;
